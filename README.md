@@ -45,10 +45,18 @@ Performance indexes are created on the most-queried foreign keys: `client_id`, `
 ## Project Structure
 
 ```
-financecore_project/
+FINANCECORE_PROJECT/
+├── .venv/                      # Virtual environment (not committed)
 ├── data/
 │   └── financecore_clean.csv   # Cleaned source data
-└── main.ipynb                  # ETL pipeline notebook
+├── docs/
+│   └── ERD.png                 # Entity-Relationship Diagram
+├── notebooks/
+│   └── main.ipynb              # ETL pipeline notebook
+├── .env                        # Database credentials (not committed)
+├── .gitignore
+├── README.md
+└── requirements.txt
 ```
 
 ---
@@ -57,35 +65,60 @@ financecore_project/
 
 * Python 3.8+
 * PostgreSQL instance (local or remote)
-* The following Python packages:
+
+Install all dependencies with:
 
 ```bash
-pip install pandas sqlalchemy psycopg2-binary python-dotenv
+pip install -r requirements.txt
 ```
+
+Key packages (pinned versions from `requirements.txt`):
+
+| Package             | Version |
+| ------------------- | ------- |
+| `pandas`          | 3.0.2   |
+| `sqlalchemy`      | 2.0.49  |
+| `psycopg2-binary` | 2.9.11  |
+| `python-dotenv`   | 1.2.2   |
+| `ipykernel`       | 7.2.0   |
+| `numpy`           | 2.4.4   |
 
 ---
 
 ## Configuration
 
-Create a `.env` file in the project root with your database credentials:
+Create a `.env` file in the project root with your database credentials. Use the following template (matching the expected variable names):
 
 ```env
-DB_USER=your_user
-DB_PASSWORD=your_password
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=your_database
+DB_HOST=host_db
+DB_PORT=port_db
+DB_NAME=name_db
+DB_USER=user_db
+DB_PASSWORD=password_db
+```
+
+> ⚠️ The `.env` file is listed in `.gitignore` and will **not** be committed to version control. Never hardcode credentials in the notebook.
+
+---
+
+## .gitignore
+
+The following are excluded from version control:
+
+```
+.venv/
+.env
 ```
 
 ---
 
 ## How to Run
 
-Open and run `main.ipynb` sequentially. The notebook is divided into the following sections:
+Open and run `notebooks/main.ipynb` sequentially. The notebook is divided into the following sections:
 
 ### 1. Connection
 
-Loads environment variables and creates a SQLAlchemy engine connected to PostgreSQL.
+Loads environment variables from `.env` and creates a SQLAlchemy engine connected to PostgreSQL.
 
 ### 2. Create Tables
 
